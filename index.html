@@ -4,77 +4,177 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Autobody Quote Builder</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f8; color: #222; }
-    main { max-width: 900px; margin: 1.5rem auto; padding: 1.5rem; background: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-    h1, h2 { color: #222; }
-    .row { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
-    label { display: block; margin-bottom: 0.35rem; font-weight: 600; }
-    input, select, textarea { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; }
-    button { background: #1f6feb; color: white; border: none; padding: 0.9rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 700; }
-    button:hover { background: #174bb3; }
-    .damage-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2,minmax(0,1fr)); }
-    .quote-result { margin-top: 1.5rem; padding: 1rem; border: 1px solid #ddd; border-radius: 10px; background: #fafafa; }
-    .quote-item { display: flex; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid #ececec; }
-    .quote-item:last-child { border-bottom: none; }
-    .photo-preview { max-width: 100%; border-radius: 10px; margin-top: 0.75rem; }
-    .full-width { grid-column: 1 / -1; }
-    .note { color: #555; font-size: 0.95rem; }
-  </style>
+  <link rel="stylesheet" href="styles.css?v=2" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 </head>
 <body>
   <main>
-    <h1>Autobody Quote Builder</h1>
-    <p class="note">Upload a photo of the damaged vehicle, select the damage types, and generate a used-car market quote for Secunda and nearby dealerships.</p>
+    <section class="hero">
+      <p class="eyebrow">Autobody Estimator</p>
+      <h1>Used-car repair quote builder</h1>
+      <p class="subtitle">Choose repair items, upload a damage photo, and generate an estimate for Secunda and nearby dealerships.</p>
+    </section>
 
-    <form id="quoteForm">
-      <div class="row">
-        <div>
-          <label for="client">Dealership / Client</label>
-          <input id="client" name="client" placeholder="Dealership name" value="Local dealership" />
+    <section class="panel">
+      <form id="quoteForm" novalidate>
+        <div class="row">
+          <div>
+            <label for="client">Dealership / Client</label>
+            <input id="client" name="client" placeholder="Dealership name" value="Local dealership" />
+          </div>
+          <div>
+            <label for="vehicle">Vehicle</label>
+            <input id="vehicle" name="vehicle" placeholder="Make, model, year" value="Toyota Corolla 2015" />
+          </div>
         </div>
-        <div>
-          <label for="vehicle">Vehicle</label>
-          <input id="vehicle" name="vehicle" placeholder="Make, model, year" value="Toyota Corolla 2015" />
+
+        <div class="row">
+          <div>
+            <label for="region">Region</label>
+            <select id="region" name="region">
+              <option value="Secunda">Secunda</option>
+              <option value="Surrounding">Surrounding area</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="photo">Damage photo</label>
+            <input id="photo" name="photo" type="file" accept="image/*" />
+            <img id="preview" class="photo-preview hidden" alt="Damage preview" />
+          </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div>
-          <label for="region">Region</label>
-          <select id="region" name="region">
-            <option value="Secunda">Secunda</option>
-            <option value="Surrounding">Surrounding area</option>
-            <option value="Other">Other</option>
-          </select>
+        <div class="panel">
+          <h2>Damage types</h2>
+          <div class="damage-grid" id="damageGrid">
+            <label class="damage-item" data-key="bumperRepair">
+              <div>
+                <input type="checkbox" name="damage" value="bumperRepair" />
+                <span>Front / rear bumper repair</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-bumperRepair">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="panelRepair">
+              <div>
+                <input type="checkbox" name="damage" value="panelRepair" />
+                <span>Panel repair</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-panelRepair">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="paint">
+              <div>
+                <input type="checkbox" name="damage" value="paint" />
+                <span>Repaint and refinishing</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-paint">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="replacement">
+              <div>
+                <input type="checkbox" name="damage" value="replacement" />
+                <span>Part replacement</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-replacement">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="dentRepair">
+              <div>
+                <input type="checkbox" name="damage" value="dentRepair" />
+                <span>Dent repair</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-dentRepair">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="windscreen">
+              <div>
+                <input type="checkbox" name="damage" value="windscreen" />
+                <span>Windscreen repair/replacement</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-windscreen">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+
+            <label class="damage-item" data-key="alloyWheel">
+              <div>
+                <input type="checkbox" name="damage" value="alloyWheel" />
+                <span>Alloy wheel repair</span>
+              </div>
+              <div class="damage-meta hidden">
+                <label>Severity
+                  <select name="severity-alloyWheel">
+                    <option value="minor">Minor</option>
+                    <option value="moderate" selected>Moderate</option>
+                    <option value="major">Major</option>
+                  </select>
+                </label>
+              </div>
+            </label>
+          </div>
         </div>
-        <div>
-          <label for="photo">Damage photo</label>
-          <input id="photo" name="photo" type="file" accept="image/*" />
-          <img id="preview" class="photo-preview" style="display:none;" />
+
+        <div class="full-width">
+          <label for="notes">Damage notes</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Add any additional detail for the quote"></textarea>
         </div>
-      </div>
 
-      <h2>Damage types</h2>
-      <div class="damage-grid">
-        <label><input type="checkbox" name="damage" value="bumperRepair" /> Front / rear bumper repair</label>
-        <label><input type="checkbox" name="damage" value="panelRepair" /> Panel repair</label>
-        <label><input type="checkbox" name="damage" value="paint" /> Repaint and refinishing</label>
-        <label><input type="checkbox" name="damage" value="replacement" /> Part replacement</label>
-        <label><input type="checkbox" name="damage" value="dentRepair" /> Dent repair</label>
-        <label><input type="checkbox" name="damage" value="windscreen" /> Windscreen repair/replacement</label>
-        <label><input type="checkbox" name="damage" value="alloyWheel" /> Alloy wheel repair</label>
-      </div>
+        <div class="form-actions full-width">
+          <button type="submit" class="primary">Generate quote</button>
+          <button type="button" id="resetButton" class="secondary">Reset form</button>
+        </div>
+      </form>
+    </section>
 
-      <div class="full-width">
-        <label for="notes">Damage notes</label>
-        <textarea id="notes" name="notes" rows="4" placeholder="Add any additional detail for the quote"></textarea>
-      </div>
-
-      <button type="submit">Generate Quote</button>
-    </form>
-
-    <div id="result" class="quote-result" style="display:none;"></div>
+    <section id="result" class="quote-result hidden"></section>
+    <section id="history" class="quote-result hidden"></section>
   </main>
 
   <script src="app.js"></script>
