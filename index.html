@@ -9,13 +9,92 @@
 </head>
 <body>
   <main>
+    <section id="loginSection" class="panel">
+      <h2>Dealer login</h2>
+      <p class="note">Only approved dealerships can access the quote builder and save their preferences.</p>
+      <form id="loginForm">
+        <div class="row">
+          <div>
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="dealership username" autocomplete="username" />
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="password" autocomplete="current-password" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary">Log in</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="userPanel" class="panel hidden">
+      <div class="row">
+        <div>
+          <p class="note">Signed in as <strong id="userName">Dealer</strong></p>
+          <p class="note small">Your dealership specifications will be remembered when you save preferences.</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="logoutButton" class="secondary">Logout</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsPanel" class="panel hidden">
+      <h2>Tailor dealership preferences</h2>
+      <p class="note">Save default settings for region, notes, preferred vehicle damage categories, and severity.</p>
+      <form id="preferencesForm">
+        <div class="row">
+          <div>
+            <label for="defaultRegion">Preferred region</label>
+            <select id="defaultRegion" name="defaultRegion">
+              <option value="Secunda">Secunda</option>
+              <option value="Surrounding">Surrounding area</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="defaultSeverity">Default severity</label>
+            <select id="defaultSeverity" name="defaultSeverity">
+              <option value="minor">Minor</option>
+              <option value="moderate">Moderate</option>
+              <option value="major">Major</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="full-width">
+          <label for="defaultNotes">Default quote note</label>
+          <textarea id="defaultNotes" name="defaultNotes" rows="3" placeholder="Write a default note for your quotes"></textarea>
+        </div>
+
+        <div class="panel">
+          <h3>Preferred damage categories</h3>
+          <div class="damage-grid">
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="bumperRepair" /> Front / rear bumper repair</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="panelRepair" /> Panel repair</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="paint" /> Repaint and refinishing</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="replacement" /> Part replacement</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="dentRepair" /> Dent repair</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="windscreen" /> Windscreen repair/replacement</label>
+            <label class="damage-item"><input type="checkbox" class="pref-category" value="alloyWheel" /> Alloy wheel repair</label>
+          </div>
+        </div>
+
+        <div class="form-actions full-width">
+          <button type="submit" class="primary">Save preferences</button>
+        </div>
+      </form>
+    </section>
+
     <section class="hero">
       <p class="eyebrow">Autobody Estimator</p>
       <h1>Used-car repair quote builder</h1>
       <p class="subtitle">Choose repair items, upload a damage photo, and generate an estimate for Secunda and nearby dealerships.</p>
     </section>
 
-    <section class="panel">
+    <section id="quotePanel" class="panel hidden">
       <form id="quoteForm" novalidate>
         <div class="row">
           <div>
@@ -169,6 +248,7 @@
         <div class="form-actions full-width">
           <button type="submit" class="primary">Generate quote</button>
           <button type="button" id="resetButton" class="secondary">Reset form</button>
+          <button type="button" id="clearHistoryButton" class="secondary">Clear history</button>
         </div>
       </form>
     </section>
